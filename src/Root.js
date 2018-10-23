@@ -1,17 +1,20 @@
 import React from "react";
 import { Provider } from "react-redux";
-import { createStore } from "redux";
+import { createStore, applyMiddleware } from "redux";
+import reduxPromise from "redux-promise";
 
 import reducers from "reducers";
 
 function Root(props) {
     const initialState = props.initialState || {};
 
-    return (
-        <Provider store={createStore(reducers, initialState)}>
-            {props.children}
-        </Provider>
+    const store = createStore(
+        reducers,
+        initialState,
+        applyMiddleware(reduxPromise)
     );
+
+    return <Provider store={store}>{props.children}</Provider>;
 }
 
 // // ALTER: Default initialState using destructuring:
